@@ -55,12 +55,11 @@ PLAT is an experimental modular application platform. Android is the first Host;
 
 ## Verification
 - Recovery validation: PASS - the repository-only recovery report covered the required project, architecture, implementation, verification, and next-step information. A separate run in another provider/account was not performed.
-- CI: PASS - [run #3](https://github.com/dimkabuki/plat/actions/runs/42371180805), commit `e938381365ddd7fd242589497835bb87aa8a42bc`.
+- CI: PASS - [run #4](https://github.com/dimkabuki/plat/actions/runs/42372605072), commit `74a31205f1b14acf642f3173d238ba2e6becdb58`.
 - CI steps observed: checkout and continuity-document validation succeeded.
 - Android build: not applicable; Android project does not exist.
 - Release workflow: not executed; no Android project or signing configuration exists.
 - Git history: `d321e2313d4a136ab5e2121888675b1e3ab90df5` is a separate commit object whose parent is `277608c3608b4f4118a0f5f72c78cfa1f589d0cb`. Its `STATE.md` and `ROADMAP.md` contents match the current `main` tree; it is not in `main` ancestry. The current `main` commit `e938381365ddd7fd242589497835bb87aa8a42bc` contains those changes along with README and recovery-prompt updates. No history rewrite or cherry-pick is required; the separate commit is left untouched.
-- This housekeeping commit still requires its own remote CI run.
 
 ## Known Risks and Open Questions
 - Exact Module Manifest schema and compatibility rules.
