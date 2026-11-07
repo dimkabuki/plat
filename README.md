@@ -24,7 +24,7 @@ The recovery prompt is read-only: it asks the agent to inspect the repository an
 
 ## Current status
 
-The repository has completed its bootstrap and now defines Module Manifest v1, a validated module ZIP layout, the module installation lifecycle, and a transport-neutral Platform API v1 contract with capability negotiation. The Android Host, runtime, module manager, SDK, and module implementation do not exist yet. See [STATE.md](STATE.md) for the authoritative status.
+The repository now defines Module Manifest v1, a validated module package layout, the installation lifecycle, Platform API v1, and the Host Adapter descriptor/session contract with conformance scenarios. The Android Host, runtime, module manager, SDK, and module implementation do not exist yet. See [STATE.md](STATE.md) for the authoritative status.
 
 ## Repositories
 
@@ -44,7 +44,7 @@ The platform repository owns the canonical Module Contract and Platform API spec
 
 ## Current CI scope
 
-CI validates continuity documents and runs automated tests for the Module Manifest v1 schema, ZIP package validator, reference lifecycle state machine, and Platform API v1 protocol/capability contracts. It will be extended with Android build, lint, and platform tests when the Android project is introduced.
+CI validates continuity documents and runs automated tests for the Module Manifest v1 schema, ZIP package validator, reference lifecycle state machine, Platform API v1 protocol/capability contracts, and Host Adapter descriptor/conformance contracts. It will be extended with Android build, lint, and platform tests when the Android project is introduced.
 
 The release workflow is scaffolded for Android APK releases, but cannot succeed until the Android Gradle project and its signing configuration exist.
 

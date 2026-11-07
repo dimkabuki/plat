@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "hostAdapterContractVersion": "1.0.0",
+  "platformApiVersion": "1.0.0",
+  "requiredScenarios": [
+    {"id": "descriptor-valid", "requirement": "Host descriptor conforms to host-adapter-v1.schema.json and reports only registry capabilities."},
+    {"id": "api-version-compatible", "requirement": "Host refuses module activation when its Platform API version is outside the manifest compatibility range."},
+    {"id": "required-capability-missing", "requirement": "Missing or unapproved required capability prevents module activation."},
+    {"id": "optional-capability-missing", "requirement": "Missing optional capability does not prevent activation and remains unavailable to calls."},
+    {"id": "request-correlation", "requirement": "Every response echoes the UUID of exactly one request; concurrent requests may complete out of order."},
+    {"id": "structured-error", "requirement": "Invalid method, parameters, or authorization returns a schema-valid structured error."},
+    {"id": "event-envelope", "requirement": "Host events use unique event IDs and schema-valid event envelopes."},
+    {"id": "session-identity-binding", "requirement": "Module identity and verified manifest are bound by Host session creation, never trusted from request parameters."},
+    {"id": "per-call-authorization", "requirement": "Every call checks method registry, manifest declaration, Host support, and current user consent."},
+    {"id": "session-storage-isolation", "requirement": "One module session cannot read or mutate another module's storage namespace."},
+    {"id": "consent-revocation", "requirement": "Revoked consent blocks subsequent calls even when the manifest still declares the capability."},
+    {"id": "message-size-limit", "requirement": "Messages exceeding the advertised limit are rejected before dispatch."},
+    {"id": "request-timeout", "requirement": "A timed-out request has one terminal outcome; a late result is not delivered as a second response."},
+    {"id": "close-idempotent", "requirement": "Closing a module session more than once is safe and does not resurrect the runtime."}
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "hostId": "android",
+  "hostVersion": "0.1.0",
+  "platformApiVersion": "1.0.0",
+  "runtimeKind": "android-webview",
+  "transport": "message-port.v1",
+  "capabilities": ["storage.kv", "ui.navigation", "notifications.local", "device.haptics"],
+  "limits": {
+    "maxMessageBytes": 262144,
+    "requestTimeoutMs": 10000,
+    "maxConcurrentRequests": 16
+  }
+}

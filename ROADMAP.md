@@ -16,7 +16,7 @@ Roadmap items are intentions, not claims of implementation. `STATE.md` is author
 - [x] Define module package layout and release asset naming.
 - [x] Specify module lifecycle and installation states.
 - [x] Define Platform API namespaces, versioning, and capability negotiation.
-- [ ] Define Host Adapter conformance requirements.
+- [x] Define Host Adapter conformance requirements.
 - [ ] Specify security boundaries and WebView bridge protocol.
 - [ ] Define compatibility and migration policy.
 

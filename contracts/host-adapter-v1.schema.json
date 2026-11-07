@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dimkabuki/plat/contracts/host-adapter-v1.schema.json",
+  "title": "PLAT Host Descriptor v1",
+  "description": "Host identity, Platform API version, transport binding, and capabilities reported by a conforming Host Adapter.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "hostId", "hostVersion", "platformApiVersion", "runtimeKind", "transport", "capabilities", "limits"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "hostId": {"type": "string", "minLength": 2, "maxLength": 80, "pattern": "^[a-z][a-z0-9]*(?:[.-][a-z0-9]+)*$"},
+    "hostVersion": {"$ref": "#/$defs/semver"},
+    "platformApiVersion": {"$ref": "#/$defs/stableVersion"},
+    "runtimeKind": {"enum": ["android-webview", "browser"]},
+    "transport": {"enum": ["message-port.v1", "web-message.v1"]},
+    "capabilities": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][A-Za-z0-9]*)+$"}},
+    "limits": {
+      "type": "object", "additionalProperties": false,
+      "required": ["maxMessageBytes", "requestTimeoutMs", "maxConcurrentRequests"],
+      "properties": {
+        "maxMessageBytes": {"type": "integer", "minimum": 1024, "maximum": 1048576},
+        "requestTimeoutMs": {"type": "integer", "minimum": 250, "maximum": 60000},
+        "maxConcurrentRequests": {"type": "integer", "minimum": 1, "maximum": 128}
+      }
+    }
+  },
+  "$defs": {
+    "stableVersion": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"},
+    "semver": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-(?:0|[1-9][0-9]*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*)(?:\\.(?:0|[1-9][0-9]*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"}
+  }
+}
