@@ -12,9 +12,15 @@ For a new contributor or AI agent, read these files in order:
 2. [PROJECT.md](PROJECT.md) - product goals, scope, and constraints.
 3. [STATE.md](STATE.md) - current implementation state and next increment.
 4. [ROADMAP.md](ROADMAP.md) - planned development phases.
-5. [Session recovery prompt](docs/agent/recover-context.md) - prompt to restore context in a new agent session.
+5. [Copyable session recovery prompt](docs/agent/recover-context.md#copyable-prompt) - restore context in a new agent session.
 
 Architecture documentation and accepted decisions live under [docs/](docs/).
+
+## Recover a new agent session
+
+Start a new agent session, provide the repository URL, and ask the agent to use the [copyable recovery prompt](docs/agent/recover-context.md#copyable-prompt). On GitHub, fenced code blocks provide a built-in copy control.
+
+The recovery prompt is read-only: it asks the agent to inspect the repository and report the current state without modifying files. Approve the next implementation increment separately.
 
 ## Current status
 

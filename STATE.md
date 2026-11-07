@@ -6,7 +6,7 @@ Last updated: 2026-11-07
 P0 - Repository bootstrap
 
 ## Overall Status
-BOOTSTRAP COMMITTED - first CI run pending
+BOOTSTRAP COMPLETE - CI passed; fresh-session recovery test pending
 
 ## Project Summary
 PLAT is an experimental modular application platform. Android is the first Host; modules are independently distributed web applications using a Host-independent contract. The repository is also the source of truth for development continuity across AI agents and sessions.
@@ -34,7 +34,7 @@ PLAT is an experimental modular application platform. Android is the first Host;
 | Repository metadata | Bootstrapped |
 | Agent instructions and recovery prompt | Added |
 | Architecture baseline and ADRs | Added |
-| CI | Initial documentation validation; first remote run pending |
+| CI | Initial documentation validation passed |
 | Release workflow | Scaffolded; Android build and signing are not implemented |
 | Android Host | Not started |
 | Platform UI | Not started |
@@ -45,19 +45,21 @@ PLAT is an experimental modular application platform. Android is the first Host;
 | Dashboard | Not started |
 | Browser/PWA Host | Not started |
 
-## Active Increment
-Bootstrap repository metadata and workflow configuration.
+## Last Completed Increment
+**Bootstrap repository metadata and workflow configuration.**
 
-Expected outcome:
-- A fresh agent can recover project context from this repository.
-- CI validates the bootstrap documentation.
-- The Android release workflow is present but clearly gated by the missing Android project.
+- Added project context, roadmap, current state, architecture baseline, ADRs, and the reusable session recovery prompt.
+- Added documentation validation script and CI workflow.
+- Added Android APK release workflow scaffold.
+- Committed directly to `main`.
 
 ## Verification
 - GitHub access: confirmed for authenticated account `dimkabuki` with admin, maintain, and push permissions.
-- Default branch: `main`.
-- Initial CI result: pending; inspect Actions after the bootstrap commit.
+- Default branch: `main`; direct push is allowed.
+- CI: PASS - [run #1](https://github.com/dimkabuki/plat/actions/runs/42365919577), commit `277608c3608b4f4118a0f5f72c78cfa1f589d0cb`.
+- CI steps observed: checkout and continuity-document validation succeeded.
 - Android build: not applicable; Android project does not exist.
+- Release workflow: not executed; no Android project or signing configuration exists.
 
 ## Known Risks and Open Questions
 - Exact Module Manifest schema and compatibility rules.
@@ -77,7 +79,7 @@ Expected outcome:
 Acceptance criteria:
 1. Start a new agent session without relying on this conversation.
 2. Give it the repository URL and the prompt in `docs/agent/recover-context.md`.
-3. The agent identifies the product, architecture direction, current phase, implemented versus unimplemented areas, and the next increment.
+3. The agent identifies the product, architecture direction, current phase, implemented versus unimplemented areas, latest CI result, and the next increment.
 4. Review discrepancies and correct repository documentation if needed.
 
 Do not begin Android implementation until this recovery test has been reviewed.
