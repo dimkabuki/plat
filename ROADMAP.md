@@ -9,7 +9,7 @@ Roadmap items are intentions, not claims of implementation. `STATE.md` is author
 - [x] Add agent instructions, state, roadmap, ADRs, and recovery prompt.
 - [x] Add initial CI and Android release workflow scaffolding.
 - [x] Verify the first CI run.
-- [ ] Test recovery in a fresh independent agent session.
+- [x] Validate the recovery prompt in a repository-only session.
 
 ## P1 - Architecture and contracts
 - [ ] Finalize the Module Manifest schema.
