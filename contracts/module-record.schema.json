@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dimkabuki/plat/contracts/module-record.schema.json",
+  "title": "PLAT Module Record v1",
+  "description": "Durable installation metadata. Runtime process state is not persisted in this record.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["recordVersion", "moduleId", "activeVersion", "previousVersion", "disabled", "operation", "lastFailure"],
+  "properties": {
+    "recordVersion": {"const": 1},
+    "moduleId": {"type": "string", "minLength": 3, "maxLength": 160, "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)+$"},
+    "activeVersion": {"anyOf": [{"$ref": "#/$defs/semver"}, {"type": "null"}]},
+    "previousVersion": {"anyOf": [{"$ref": "#/$defs/semver"}, {"type": "null"}]},
+    "disabled": {"type": "boolean"},
+    "operation": {
+      "type": ["object", "null"], "additionalProperties": false,
+      "required": ["operationId", "kind", "phase", "sourceVersion", "targetVersion"],
+      "properties": {
+        "operationId": {"type": "string", "pattern": "^[a-f0-9]{32}$"},
+        "kind": {"enum": ["install", "update", "rollback", "remove"]},
+        "phase": {"enum": ["downloading", "verifying", "staging", "activating", "removing"]},
+        "sourceVersion": {"anyOf": [{"$ref": "#/$defs/semver"}, {"type": "null"}]},
+        "targetVersion": {"anyOf": [{"$ref": "#/$defs/semver"}, {"type": "null"}]}
+      }
+    },
+    "lastFailure": {
+      "type": ["object", "null"], "additionalProperties": false,
+      "required": ["kind", "phase", "errorCode", "targetVersion"],
+      "properties": {
+        "kind": {"enum": ["install", "update", "rollback", "remove"]},
+        "phase": {"enum": ["downloading", "verifying", "staging", "activating", "removing"]},
+        "errorCode": {"type": "string", "minLength": 2, "maxLength": 64, "pattern": "^[a-z][a-z0-9_]{1,63}$"},
+        "targetVersion": {"anyOf": [{"$ref": "#/$defs/semver"}, {"type": "null"}]}
+      }
+    }
+  },
+  "$defs": {
+    "semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-(?:0|[1-9][0-9]*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*)(?:\\.(?:0|[1-9][0-9]*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    }
+  }
+}

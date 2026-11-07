@@ -1,6 +1,6 @@
 # Roadmap
 
-Roadmap items are intentions, not claims of implementation. `STATE.md` is authoritative for current progress and the next increment.
+Roadmap items are intentions, not claims of implementation. \`STATE.md\` is authoritative for current progress and the next increment.
 
 ## P0 - Repository bootstrap
 - [x] Define product direction and initial architecture.
@@ -14,7 +14,7 @@ Roadmap items are intentions, not claims of implementation. `STATE.md` is author
 ## P1 - Architecture and contracts
 - [x] Finalize the Module Manifest schema.
 - [x] Define module package layout and release asset naming.
-- [ ] Specify module lifecycle and installation states.
+- [x] Specify module lifecycle and installation states.
 - [ ] Define Platform API namespaces, versioning, and capability negotiation.
 - [ ] Define Host Adapter conformance requirements.
 - [ ] Specify security boundaries and WebView bridge protocol.

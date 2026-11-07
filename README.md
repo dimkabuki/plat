@@ -24,7 +24,7 @@ The recovery prompt is read-only: it asks the agent to inspect the repository an
 
 ## Current status
 
-The repository has completed its bootstrap and now defines Module Manifest v1, the module ZIP layout, and a reference package validator. The Android Host, runtime, module manager, SDK, and module implementation do not exist yet. See [STATE.md](STATE.md) for the authoritative status.
+The repository now defines Module Manifest v1, the module ZIP layout, a package validator, and the module installation lifecycle contract with an executable reference state machine. The Android Host, runtime, module manager, SDK, and module implementation do not exist yet. See [STATE.md](STATE.md) for the authoritative status.
 
 ## Repositories
 
@@ -35,16 +35,16 @@ The platform repository owns the canonical Module Contract and Platform API spec
 
 ## Development model
 
-- Work directly on `main`; no pull-request workflow is planned.
+- Work directly on \`main\`; no pull-request workflow is planned.
 - Keep changes small and independently verifiable.
 - Run relevant checks before committing and pushing.
 - Use Conventional Commits.
-- Update `STATE.md` and `ROADMAP.md` in the same implementation commit when progress changes; avoid metadata-only follow-up commits.
+- Update \`STATE.md\` and \`ROADMAP.md\` in the same implementation commit when progress changes; avoid metadata-only follow-up commits.
 - Keep CI read-only. Release workflows receive write permission only when publishing a release.
 
 ## Current CI scope
 
-CI validates continuity documents and runs automated tests for the Module Manifest v1 schema and ZIP package validator. It will be extended with Android build, lint, and platform tests when the Android project is introduced.
+CI validates continuity documents and runs automated tests for the Module Manifest v1 schema, ZIP package validator, and reference lifecycle state machine. It will be extended with Android build, lint, and platform tests when the Android project is introduced.
 
 The release workflow is scaffolded for Android APK releases, but cannot succeed until the Android Gradle project and its signing configuration exist.
 

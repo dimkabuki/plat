@@ -19,9 +19,12 @@ REQUIRED_FILES = (
     "docs/architecture/security.md",
     "docs/workflows/development.md",
     "contracts/module-manifest.schema.json",
+    "contracts/module-record.schema.json",
     "contracts/examples/counter/module.json",
     "scripts/validate_module_package.py",
+    "scripts/module_lifecycle.py",
     "tests/test_validate_module_package.py",
+    "tests/test_module_lifecycle.py",
     "requirements-dev.txt",
 )
 
