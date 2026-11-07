@@ -14,8 +14,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  metadata:
-    name: Validate project metadata
+  validate:
+    name: Validate project and module contracts
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -23,5 +23,16 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.12"
+
+      - name: Install development dependencies
+        run: python3 -m pip install --requirement requirements-dev.txt
+
       - name: Validate continuity documents
         run: python3 scripts/validate_project_docs.py
+
+      - name: Run module package contract tests
+        run: python3 -m unittest discover -s tests -v

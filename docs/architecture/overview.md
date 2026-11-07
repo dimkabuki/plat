@@ -34,6 +34,8 @@ Modules execute as web content in a WebView or compatible browser runtime. Their
 
 Candidate implementations include vanilla JavaScript/TypeScript, Svelte, and Rust compiled to WebAssembly. Canvas and WebGL are rendering options where supported by the Host.
 
+Module Manifest v1 and its ZIP package boundary are specified in `contracts/` and `docs/architecture/module-runtime.md`.
+
 ## Host portability
 Android is first. Browser/PWA is the first planned portability test. Chrome Extension is exploratory because extension execution and remote-code policies differ from a normal browser host.
 
@@ -46,4 +48,4 @@ A shared contract does not guarantee feature parity. Each Host advertises its ca
 - The Host owns update state and the installed-module registry.
 
 ## Current boundaries
-This is an architecture baseline, not a completed implementation. Detailed contracts, runtime security, protocol framing, and lifecycle semantics remain to be specified in P1.
+This is an architecture baseline, not a completed product implementation. Lifecycle semantics, Platform API framing, Host Adapter conformance, and WebView security details remain P1 work.

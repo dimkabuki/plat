@@ -12,8 +12,8 @@ Roadmap items are intentions, not claims of implementation. `STATE.md` is author
 - [x] Validate the recovery prompt in a repository-only session.
 
 ## P1 - Architecture and contracts
-- [ ] Finalize the Module Manifest schema.
-- [ ] Define module package layout and release asset naming.
+- [x] Finalize the Module Manifest schema.
+- [x] Define module package layout and release asset naming.
 - [ ] Specify module lifecycle and installation states.
 - [ ] Define Platform API namespaces, versioning, and capability negotiation.
 - [ ] Define Host Adapter conformance requirements.

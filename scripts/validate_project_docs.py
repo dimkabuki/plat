@@ -18,6 +18,11 @@ REQUIRED_FILES = (
     "docs/architecture/platform-api.md",
     "docs/architecture/security.md",
     "docs/workflows/development.md",
+    "contracts/module-manifest.schema.json",
+    "contracts/examples/counter/module.json",
+    "scripts/validate_module_package.py",
+    "tests/test_validate_module_package.py",
+    "requirements-dev.txt",
 )
 
 STATE_REQUIRED_HEADINGS = (
@@ -32,7 +37,7 @@ STATE_REQUIRED_HEADINGS = (
 def main() -> int:
     missing = [path for path in REQUIRED_FILES if not (ROOT / path).is_file()]
     if missing:
-        print("Missing required project documents:")
+        print("Missing required project documents or contract files:")
         for path in missing:
             print(f"  - {path}")
         return 1

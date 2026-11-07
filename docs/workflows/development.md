@@ -9,17 +9,17 @@
 
 ## Increment lifecycle
 1. Recover context from `AGENTS.md`, `PROJECT.md`, `STATE.md`, and `ROADMAP.md`.
-2. Inspect actual code, Git status, recent commits, and CI status.
+2. Inspect actual code, tests, Git status, recent commits, and CI status.
 3. Select the single next increment in `STATE.md`.
 4. Define a small scope and explicit acceptance criteria.
 5. Implement the change and its tests.
 6. Run relevant checks locally.
 7. Review the complete diff.
-8. Update docs, ADRs, and `STATE.md`.
-9. Commit with a Conventional Commit message.
+8. Update `STATE.md` and `ROADMAP.md` before the commit; include related architecture docs and ADRs in the same increment.
+9. Commit the complete implementation and its metadata together with a Conventional Commit message. Do not create separate metadata-only or documentation-only follow-up commits.
 10. Push to `main`.
 11. Inspect the corresponding GitHub Actions run.
-12. Report commit, validation, CI, remaining issues, and next increment.
+12. Report commit, local validation, CI, remaining issues, and next increment. Record post-push CI evidence in the next substantive checkpoint.
 
 ## Context-limit handling
 Do not wait until an agent context is nearly exhausted to checkpoint. Complete and commit one verified increment before starting another.

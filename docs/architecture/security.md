@@ -10,8 +10,10 @@ Security is a core design constraint even though PLAT is experimental. A module 
 5. Host capability calls to Android or browser APIs.
 
 ## Initial requirements
-- Validate the manifest before installation.
-- Reject path traversal, unexpected archive entries, duplicate paths, and invalid package layouts.
+- Validate the manifest before installation using the canonical v1 schema and semantic rules. CI checks the reference implementation with the same schema; the Android Host must preserve these semantics when its validator is implemented.
+- Reject path traversal, absolute paths, drive-prefixed paths, backslashes, NULs, non-normalized names, case-insensitive collisions, symlinks, special archive entries, encrypted entries, unexpected compression methods, duplicate paths, and invalid package layouts.
+- Enforce compressed/uncompressed size, entry-count, and compression-ratio limits before activation.
+- Read and verify every ZIP entry, including CRC, before accepting a package.
 - Verify downloaded package integrity before activation.
 - A checksum is useful against accidental corruption only when the expected checksum comes from an authenticated trusted channel; it does not by itself prove publisher identity.
 - Plan publisher signatures and key rotation before accepting third-party modules.

@@ -1,7 +1,7 @@
 # Agent Instructions
 
 ## Source of truth
-This repository is the authoritative source for project context and development state. Do not rely on previous conversations, hidden agent memory, or provider-specific workspace state.
+The repository is the authoritative source for project context and development state. Do not rely on previous conversations, hidden agent memory, or provider-specific workspace state.
 
 Before planning or changing code, read:
 1. `PROJECT.md`
@@ -41,12 +41,12 @@ If the next action is ambiguous or conflicts with the actual repository state, r
 
 ## Checkpoint and continuity
 At the end of every completed increment:
-1. Update `STATE.md` with status, completed work, observed verification, known issues, and one concrete next increment.
-2. Update architecture docs or ADRs when implementation or an accepted decision changes.
+1. Update `STATE.md` and `ROADMAP.md` before committing, in the same commit as the implementation.
+2. Update architecture docs or ADRs in that same increment when implementation or an accepted decision changes.
 3. Ensure no required knowledge exists only in the conversation.
-4. Commit the complete, verified increment using Conventional Commits.
+4. Commit the complete, verified increment using Conventional Commits; do not create separate metadata-only or documentation-only follow-up commits for that increment.
 5. Push directly to `main`.
-6. Inspect the corresponding GitHub Actions run and record its status.
+6. Inspect the corresponding GitHub Actions run and report its status. Record a post-push CI result in the next substantive checkpoint rather than creating a metadata-only commit.
 
 Do not wait until the context limit is near before saving progress. Checkpoint after each logical increment.
 

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "dev.plat.example.counter",
+  "name": "Counter",
+  "version": "1.0.0",
+  "description": "A minimal example module used to verify the PLAT package contract.",
+  "entry": "index.html",
+  "platformApi": {
+    "minVersion": "1.0.0"
+  },
+  "capabilities": {
+    "required": [],
+    "optional": ["storage.kv"]
+  }
+}

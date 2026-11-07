@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dimkabuki/plat/contracts/module-manifest.schema.json",
+  "title": "PLAT Module Manifest v1",
+  "description": "Host-independent metadata for a packaged PLAT web module. Cross-field and archive rules are enforced by the package validator.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "name", "version", "entry", "platformApi", "capabilities"],
+  "properties": {
+    "schemaVersion": {"const": 1, "description": "Module manifest format version. Independent of module and Platform API versions."},
+    "id": {"type": "string", "minLength": 3, "maxLength": 160, "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)+$", "description": "Stable reverse-domain identifier. Must not change between releases of the same module."},
+    "name": {"type": "string", "minLength": 1, "maxLength": 80},
+    "version": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-(?:0|[1-9][0-9]*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*)(?:\\.(?:0|[1-9][0-9]*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*))*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$", "description": "Semantic Versioning 2.0.0. Build metadata does not affect precedence."},
+    "description": {"type": "string", "maxLength": 280},
+    "entry": {"type": "string", "minLength": 1, "maxLength": 240, "pattern": "^[A-Za-z0-9][A-Za-z0-9._/-]*$", "description": "Case-sensitive POSIX-relative path to the module entry HTML file. Must resolve to a regular file in the archive."},
+    "platformApi": {
+      "type": "object", "additionalProperties": false, "required": ["minVersion"],
+      "properties": {
+        "minVersion": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$", "description": "Minimum compatible stable Platform API version. Host and minimum must have the same major version."},
+        "maxVersionExclusive": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$", "description": "Optional exclusive upper bound. Must be greater than minVersion and use the same major version."}
+      }
+    },
+    "capabilities": {
+      "type": "object", "additionalProperties": false, "required": ["required", "optional"],
+      "properties": {
+        "required": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 3, "maxLength": 80, "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][A-Za-z0-9]*)+$"}, "description": "Capabilities that must be supported before the module can be activated."},
+        "optional": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 3, "maxLength": 80, "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][A-Za-z0-9]*)+$"}, "description": "Capabilities used only when the Host advertises them."}
+      }
+    }
+  }
+}
