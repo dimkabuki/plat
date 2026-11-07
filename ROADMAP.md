@@ -17,7 +17,7 @@ Roadmap items are intentions, not claims of implementation. `STATE.md` is author
 - [x] Specify module lifecycle and installation states.
 - [x] Define Platform API namespaces, versioning, and capability negotiation.
 - [x] Define Host Adapter conformance requirements.
-- [ ] Specify security boundaries and WebView bridge protocol.
+- [x] Specify security boundaries and WebView bridge protocol.
 - [ ] Define compatibility and migration policy.
 
 ## P2 - Android Host foundation

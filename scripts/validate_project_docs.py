@@ -18,13 +18,18 @@ REQUIRED_FILES = (
     "docs/architecture/platform-api.md",
     "docs/architecture/host-adapter.md",
     "docs/architecture/security.md",
+    "docs/architecture/security.md",
     "docs/workflows/development.md",
+    "docs/decisions/ADR-0005-webview-security-boundary.md",
     "contracts/module-manifest.schema.json",
     "contracts/module-record.schema.json",
     "contracts/platform-api-v1.schema.json",
     "contracts/platform-capabilities-v1.json",
     "contracts/host-adapter-v1.schema.json",
     "contracts/host-adapter-conformance-v1.json",
+    "contracts/webview-bridge-v1.schema.json",
+    "contracts/webview-security-v1.json",
+    "contracts/webview-security-conformance-v1.json",
     "contracts/examples/host/android.json",
     "contracts/examples/host/browser.json",
     "contracts/examples/counter/module.json",
@@ -32,10 +37,12 @@ REQUIRED_FILES = (
     "scripts/module_lifecycle.py",
     "scripts/validate_platform_api.py",
     "scripts/validate_host_adapter.py",
+    "scripts/validate_webview_security.py",
     "tests/test_validate_module_package.py",
     "tests/test_module_lifecycle.py",
     "tests/test_platform_api_contract.py",
     "tests/test_host_adapter_contract.py",
+    "tests/test_webview_security_contract.py",
     "requirements-dev.txt",
 )
 
@@ -66,3 +73,7 @@ def main() -> int:
 
     print(f"Project metadata validation passed ({len(REQUIRED_FILES)} required files).")
     return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

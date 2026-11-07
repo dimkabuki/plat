@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "bridgeContractVersion": "1.0.0",
+  "platformApiVersion": "1.0.0",
+  "requiredScenarios": [
+    {"id": "origin-per-module", "threat": "A different module attempts to reuse this module's origin.", "expected": "Different stable module IDs map to different exact HTTPS origins."},
+    {"id": "origin-spoofed", "threat": "A message arrives from a lookalike or attacker-controlled origin.", "expected": "Reject unless sourceOrigin exactly equals the active module origin."},
+    {"id": "subframe-message", "threat": "An iframe sends a message through the injected bridge object.", "expected": "Reject messages when isMainFrame is false; subframes are blocked by policy."},
+    {"id": "handshake-required", "threat": "Module sends an API request before bridge initialization.", "expected": "Reject all API messages until a valid hello/helloAck handshake completes."},
+    {"id": "stale-session", "threat": "A delayed message from a previous document or WebView session arrives.", "expected": "Reject when sessionId does not match the active Host-generated session ID."},
+    {"id": "malformed-json", "threat": "Module sends malformed JSON, duplicate keys, or an invalid Platform API envelope.", "expected": "Reject before dispatch; do not partially process the message."},
+    {"id": "message-size-limit", "threat": "Module sends an oversized UTF-8 message.", "expected": "Reject before JSON parsing when encoded size exceeds 65536 bytes."},
+    {"id": "direction-confusion", "threat": "Module sends a response or event as if it were a Host message.", "expected": "Accept only Platform API request envelopes from module to Host."},
+    {"id": "module-id-spoofing", "threat": "Module includes a different module ID in request metadata or parameters.", "expected": "Reject unknown fields; attribute requests only from Host-owned session context."},
+    {"id": "cross-module-storage", "threat": "Module attempts to name or address another module's storage namespace.", "expected": "Derive the namespace from the active session module ID; no API accepts a caller-selected namespace."},
+    {"id": "javascript-interface-absent", "threat": "Untrusted content attempts to invoke a generic native JavaScript interface.", "expected": "No addJavascriptInterface bridge is registered."},
+    {"id": "unsupported-transport-feature", "threat": "The installed WebView lacks WEB_MESSAGE_LISTENER support.", "expected": "Refuse module launch; do not fall back to an unrestricted transport."},
+    {"id": "navigation-restricted", "threat": "Module attempts top-level navigation to another origin or custom scheme.", "expected": "Block navigation in the module WebView and do not dispatch external intents."},
+    {"id": "file-and-content-access-disabled", "threat": "Module attempts to read local files or ContentProvider URIs.", "expected": "File and content access settings remain disabled."},
+    {"id": "remote-code-blocked", "threat": "Module attempts to load remote executable scripts or remote connections.", "expected": "CSP permits same-origin scripts only and connect-src self only."},
+    {"id": "capability-rechecked", "threat": "Module calls an API after consent is revoked or capability support disappears.", "expected": "Re-evaluate method, manifest declaration, Host support, and current consent on every call."},
+    {"id": "session-teardown", "threat": "Navigation, renderer death, update, disablement, or removal leaves old callbacks active.", "expected": "Invalidate the session, cancel pending work, and discard late responses/events."}
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dimkabuki/plat/contracts/webview-bridge-v1.schema.json",
+  "title": "PLAT Android WebView Bridge v1",
+  "description": "Transport wrapper for the Platform API v1 message envelope. The nested message is validated by platform-api-v1.schema.json and the capability registry.",
+  "oneOf": [
+    {"$ref": "#/$defs/hello"},
+    {"$ref": "#/$defs/helloAck"},
+    {"$ref": "#/$defs/message"}
+  ],
+  "$defs": {
+    "uuid": {"type": "string", "format": "uuid"},
+    "hello": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bridgeVersion", "type", "helloId", "protocolVersion"],
+      "properties": {
+        "bridgeVersion": {"const": 1},
+        "type": {"const": "hello"},
+        "helloId": {"$ref": "#/$defs/uuid"},
+        "protocolVersion": {"const": 1}
+      }
+    },
+    "helloAck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bridgeVersion", "type", "helloId", "sessionId", "maxMessageBytes", "requestTimeoutMs"],
+      "properties": {
+        "bridgeVersion": {"const": 1},
+        "type": {"const": "helloAck"},
+        "helloId": {"$ref": "#/$defs/uuid"},
+        "sessionId": {"$ref": "#/$defs/uuid"},
+        "maxMessageBytes": {"const": 65536},
+        "requestTimeoutMs": {"const": 15000}
+      }
+    },
+    "message": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bridgeVersion", "type", "sessionId", "message"],
+      "properties": {
+        "bridgeVersion": {"const": 1},
+        "type": {"const": "message"},
+        "sessionId": {"$ref": "#/$defs/uuid"},
+        "message": {
+          "type": "object",
+          "required": ["protocolVersion", "type"],
+          "properties": {
+            "protocolVersion": {"const": 1},
+            "type": {"enum": ["request", "response", "event"]}
+          }
+        }
+      }
+    }
+  }
+}

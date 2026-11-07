@@ -58,6 +58,12 @@ A session can access only the active committed version for its module ID. Update
 - Timeouts are enforced by the adapter. A late result after timeout is discarded and cannot produce a second terminal response.
 - Closing a session stops event delivery, rejects new requests, and safely drains or rejects pending requests according to their method semantics.
 
+## Android WebView binding
+
+The Android v1 binding is defined in [WebView Security Boundary v1](security.md) and `contracts/webview-security-v1.json`. It uses a per-module HTTPS origin served by WebViewAssetLoader and WebViewCompat.WebMessageListener with an exact allowed-origin rule. The callback must validate both source origin and main-frame status. The bridge has a handshake and Host-generated session ID; the nested Platform API envelopes are unchanged. Unsupported WebMessageListener support fails closed rather than falling back to addJavascriptInterface.
+
+The Browser/PWA binding is not specified by this Android policy. It must preserve the same session, direction, identity, authorization, size, and teardown semantics using its own origin-bound transport.
+
 ## Capability ownership
 
 The Host owns capability availability and user-consent state. The adapter maps each Host's underlying platform features to the canonical capability registry. It must not advertise a capability when the underlying feature is missing or blocked by runtime permissions.
@@ -75,7 +81,7 @@ Capability revocation takes effect for subsequent calls. A session must not cach
 
 The Platform API envelopes remain unchanged across transports. The adapter is responsible for mapping them to/from the selected transport:
 
-- Android WebView may use an origin-restricted WebMessageListener or MessagePort bridge after the WebView origin and asset-loading design is reviewed.
+- Android WebView uses the origin-restricted WebMessageListener binding described above.
 - Browser/PWA may use MessageChannel or another same-origin, explicitly bound message-port transport.
 
 Transport-specific sender/origin checks, navigation policy, message size enforcement, and endpoint teardown are mandatory. A generic `postMessage` receiver that accepts messages from arbitrary origins or an unrestricted native JavaScript bridge is not conformant.
@@ -88,4 +94,4 @@ When an adapter is implemented, its own tests must execute every scenario agains
 
 ## Non-goals
 
-This contract does not prescribe Android WebView settings, browser iframe/sandbox selection, concrete persistence technology, module UI rendering, SDK ergonomics, or update-source implementation. Those remain separate architecture and implementation increments.
+This contract does not prescribe Browser/PWA iframe/sandbox selection, concrete persistence technology, module UI rendering, SDK ergonomics, or update-source implementation. Those remain separate architecture and implementation increments.
