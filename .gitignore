@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+
+# Android / Gradle
+.gradle/
+**/build/
+local.properties
+*.jks
+*.keystore
+
+# Node / frontend
+node_modules/
+dist/
+.vite/
+
+# Logs and temporary files
+*.log
+.tmp/

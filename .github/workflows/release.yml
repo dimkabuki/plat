@@ -1,0 +1,63 @@
+name: Release Android APK
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Build and publish Android release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up JDK
+        uses: actions/setup-java@77dd5b2ce225ea11469928ac317850245a74ae78 # v6.2.0
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Check Android release project exists
+        run: |
+          if [ ! -x android/gradlew ]; then
+            echo "::error::Android release build is not available yet. Add the Android Gradle project and wrapper before creating a version tag."
+            exit 1
+          fi
+
+      - name: Build release APK
+        working-directory: android
+        run: ./gradlew --no-daemon clean test lint assembleRelease
+
+      - name: Prepare release assets
+        run: |
+          set -euo pipefail
+          apk="$(find android -type f -path '*/build/outputs/apk/release/*.apk' -print -quit)"
+          if [ -z "$apk" ]; then
+            echo "::error::Gradle completed but no release APK was found."
+            exit 1
+          fi
+          mkdir -p dist
+          cp "$apk" dist/plat.apk
+          sha256sum dist/plat.apk > dist/plat.apk.sha256
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            dist/plat.apk \
+            dist/plat.apk.sha256 \
+            --verify-tag \
+            --generate-notes
