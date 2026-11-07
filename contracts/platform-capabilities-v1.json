@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "platformApiVersion": "1.0.0",
+  "transport": {
+    "messageType": "JSON object",
+    "correlation": "request.id matches response.id",
+    "ordering": "No ordering guarantee across independent requests or events",
+    "bootstrapMethod": "platform.negotiate"
+  },
+  "capabilities": {
+    "storage.kv": {
+      "permission": "automatic",
+      "description": "Module-scoped key/value storage. A module cannot address another module's storage.",
+      "methods": {
+        "storage.kv.get": {"requiredCapability": "storage.kv", "params": {"type": "object", "additionalProperties": false, "required": ["key"], "properties": {"key": {"type": "string", "minLength": 1, "maxLength": 256}}}},
+        "storage.kv.set": {"requiredCapability": "storage.kv", "params": {"type": "object", "additionalProperties": false, "required": ["key", "value"], "properties": {"key": {"type": "string", "minLength": 1, "maxLength": 256}, "value": {"type": ["object", "array", "string", "number", "boolean", "null"]}}}},
+        "storage.kv.delete": {"requiredCapability": "storage.kv", "params": {"type": "object", "additionalProperties": false, "required": ["key"], "properties": {"key": {"type": "string", "minLength": 1, "maxLength": 256}}}},
+        "storage.kv.keys": {"requiredCapability": "storage.kv", "params": {"type": "object", "additionalProperties": false, "properties": {"prefix": {"type": "string", "maxLength": 256}}}}
+      }
+    },
+    "ui.navigation": {
+      "permission": "automatic",
+      "description": "Requests to update the Host-owned navigation chrome or close the current module surface.",
+      "methods": {
+        "ui.navigation.setTitle": {"requiredCapability": "ui.navigation", "params": {"type": "object", "additionalProperties": false, "required": ["title"], "properties": {"title": {"type": "string", "minLength": 1, "maxLength": 80}}}},
+        "ui.navigation.requestClose": {"requiredCapability": "ui.navigation", "params": {"type": "object", "additionalProperties": false, "properties": {}}}
+      }
+    },
+    "notifications.local": {
+      "permission": "user-consent",
+      "description": "Schedules and cancels user-visible local notifications. The Host owns runtime notification permission and UX.",
+      "methods": {
+        "notifications.local.schedule": {"requiredCapability": "notifications.local", "params": {"type": "object", "additionalProperties": false, "required": ["id", "title"], "properties": {"id": {"type": "string", "minLength": 1, "maxLength": 128}, "title": {"type": "string", "minLength": 1, "maxLength": 120}, "body": {"type": "string", "maxLength": 1000}, "at": {"type": "string", "format": "date-time"}}}},
+        "notifications.local.cancel": {"requiredCapability": "notifications.local", "params": {"type": "object", "additionalProperties": false, "required": ["id"], "properties": {"id": {"type": "string", "minLength": 1, "maxLength": 128}}}}
+      }
+    },
+    "device.haptics": {
+      "permission": "user-consent",
+      "description": "Short haptic feedback. Host applies duration and rate limits.",
+      "methods": {
+        "device.haptics.vibrate": {"requiredCapability": "device.haptics", "params": {"type": "object", "additionalProperties": false, "required": ["durationMs"], "properties": {"durationMs": {"type": "integer", "minimum": 1, "maximum": 500}}}}
+      }
+    }
+  }
+}

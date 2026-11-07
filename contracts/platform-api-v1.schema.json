@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/dimkabuki/plat/contracts/platform-api-v1.schema.json",
+  "title": "PLAT Platform API v1 message envelope",
+  "description": "Transport-neutral JSON message envelope. Method parameter/result contracts are defined by the capability registry.",
+  "oneOf": [
+    {"$ref": "#/$defs/request"},
+    {"$ref": "#/$defs/response"},
+    {"$ref": "#/$defs/event"}
+  ],
+  "$defs": {
+    "uuid": {"type": "string", "format": "uuid"},
+    "apiVersion": {"type": "string", "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"},
+    "capabilities": {
+      "type": "object", "additionalProperties": false,
+      "required": ["required", "optional"],
+      "properties": {
+        "required": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][A-Za-z0-9]*)+$"}},
+        "optional": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][A-Za-z0-9]*)+$"}}
+      }
+    },
+    "negotiateParams": {
+      "type": "object", "additionalProperties": false,
+      "required": ["module", "api", "capabilities"],
+      "properties": {
+        "module": {
+          "type": "object", "additionalProperties": false,
+          "required": ["id", "manifestSchemaVersion"],
+          "properties": {
+            "id": {"type": "string", "minLength": 3, "maxLength": 160, "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:\\.[a-z][a-z0-9]*(?:-[a-z0-9]+)*)+$"},
+            "manifestSchemaVersion": {"const": 1}
+          }
+        },
+        "api": {
+          "type": "object", "additionalProperties": false,
+          "required": ["minVersion"],
+          "properties": {
+            "minVersion": {"$ref": "#/$defs/apiVersion"},
+            "maxVersionExclusive": {"$ref": "#/$defs/apiVersion"}
+          }
+        },
+        "capabilities": {"$ref": "#/$defs/capabilities"}
+      }
+    },
+    "request": {
+      "type": "object", "additionalProperties": false,
+      "required": ["protocolVersion", "type", "id", "method", "params"],
+      "properties": {
+        "protocolVersion": {"const": 1},
+        "type": {"const": "request"},
+        "id": {"$ref": "#/$defs/uuid"},
+        "method": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][A-Za-z0-9]*){1,5}$"},
+        "params": {"type": "object"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"method": {"const": "platform.negotiate"}}, "required": ["method"]},
+          "then": {"properties": {"params": {"$ref": "#/$defs/negotiateParams"}}}
+        }
+      ]
+    },
+    "error": {
+      "type": "object", "additionalProperties": false,
+      "required": ["code", "message", "retryable"],
+      "properties": {
+        "code": {"enum": ["INVALID_ENVELOPE", "UNSUPPORTED_PROTOCOL", "METHOD_NOT_FOUND", "INVALID_PARAMS", "CAPABILITY_NOT_DECLARED", "CAPABILITY_UNAVAILABLE", "PERMISSION_DENIED", "NOT_READY", "NOT_FOUND", "CONFLICT", "QUOTA_EXCEEDED", "RATE_LIMITED", "CANCELLED", "INTERNAL_ERROR"]},
+        "message": {"type": "string", "minLength": 1, "maxLength": 256},
+        "retryable": {"type": "boolean"},
+        "details": {"type": "object"}
+      }
+    },
+    "response": {
+      "type": "object", "additionalProperties": false,
+      "required": ["protocolVersion", "type", "id"],
+      "properties": {
+        "protocolVersion": {"const": 1},
+        "type": {"const": "response"},
+        "id": {"$ref": "#/$defs/uuid"},
+        "result": {},
+        "error": {"$ref": "#/$defs/error"}
+      },
+      "oneOf": [
+        {"required": ["result"], "not": {"required": ["error"]}},
+        {"required": ["error"], "not": {"required": ["result"]}}
+      ]
+    },
+    "event": {
+      "type": "object", "additionalProperties": false,
+      "required": ["protocolVersion", "type", "eventId", "event", "payload"],
+      "properties": {
+        "protocolVersion": {"const": 1},
+        "type": {"const": "event"},
+        "eventId": {"$ref": "#/$defs/uuid"},
+        "event": {"type": "string", "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][A-Za-z0-9]*){1,5}$"},
+        "payload": {"type": "object"}
+      }
+    }
+  }
+}

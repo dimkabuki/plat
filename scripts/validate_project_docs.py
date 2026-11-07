@@ -20,11 +20,15 @@ REQUIRED_FILES = (
     "docs/workflows/development.md",
     "contracts/module-manifest.schema.json",
     "contracts/module-record.schema.json",
+    "contracts/platform-api-v1.schema.json",
+    "contracts/platform-capabilities-v1.json",
     "contracts/examples/counter/module.json",
     "scripts/validate_module_package.py",
     "scripts/module_lifecycle.py",
+    "scripts/validate_platform_api.py",
     "tests/test_validate_module_package.py",
     "tests/test_module_lifecycle.py",
+    "tests/test_platform_api_contract.py",
     "requirements-dev.txt",
 )
 
@@ -55,7 +59,3 @@ def main() -> int:
 
     print(f"Project metadata validation passed ({len(REQUIRED_FILES)} required files).")
     return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())
