@@ -66,6 +66,11 @@ class WebViewSecurityContractTests(unittest.TestCase):
         validate_security_policy()
         validate_conformance_matrix()
 
+    def test_policy_origin_pattern_matches_the_module_origin(self) -> None:
+        pattern = _load_json("contracts/webview-security-v1.json")["origin"]["hostPattern"]
+        self.assertRegex(ORIGIN.removeprefix("https://"), pattern)
+        self.assertNotRegex((ORIGIN + ".attacker.example").removeprefix("https://"), pattern)
+
     def test_handshake_binds_host_generated_session(self) -> None:
         ack = self.session.receive(self.hello(), source_origin=ORIGIN, is_main_frame=True)
         self.assertEqual(self.session.state, "active")

@@ -18,7 +18,7 @@ from validate_platform_api import PlatformApiError, validate_message
 ROOT = Path(__file__).resolve().parents[1]
 MAX_MESSAGE_BYTES = 65536
 REQUEST_TIMEOUT_MS = 15000
-MODULE_ORIGIN_RE = re.compile(r"^https://m-[0-9a-f]{48}\\.modules\\.plat\\.invalid$")
+MODULE_ORIGIN_RE = re.compile(r"^https://m-[0-9a-f]{48}\.modules\.plat\.invalid$")
 REQUIRED_SCENARIOS = {
     "origin-per-module",
     "origin-spoofed",
@@ -203,9 +203,11 @@ class WebViewBridgeSession:
             raise WebViewSecurityError("message source origin does not match the active module origin")
 
         if self.state == "pending":
-            value = validate_bridge_message(raw_message, direction="module-to-host")
-            if value["type"] != "hello":
+            pending_value, _ = _parse_message(raw_message)
+            _validate_schema(pending_value)
+            if pending_value.get("type") != "hello":
                 raise WebViewSecurityError("the first module message must be hello")
+            value = validate_bridge_message(pending_value, direction="module-to-host")
             self.hello_id = value["helloId"]
             self.state = "active"
             return {
@@ -252,7 +254,7 @@ def validate_security_policy() -> None:
     origin = policy.get("origin", {})
     if origin.get("scheme") != "https" or origin.get("assetLoader") != "androidx.webkit.WebViewAssetLoader":
         raise WebViewSecurityError("module content must use HTTPS WebViewAssetLoader origins")
-    if origin.get("hostPattern") != r"^m-[0-9a-f]{48}\\.modules\\.plat\\.invalid$":
+    if origin.get("hostPattern") != r"^m-[0-9a-f]{48}\.modules\.plat\.invalid$":
         raise WebViewSecurityError("module origin must be unique and hash-derived")
     transport = policy.get("transport", {})
     if transport.get("implementation") != "androidx.webkit.WebViewCompat.addWebMessageListener":

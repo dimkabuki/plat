@@ -18,7 +18,6 @@ REQUIRED_FILES = (
     "docs/architecture/platform-api.md",
     "docs/architecture/host-adapter.md",
     "docs/architecture/security.md",
-    "docs/architecture/security.md",
     "docs/workflows/development.md",
     "docs/decisions/ADR-0005-webview-security-boundary.md",
     "contracts/module-manifest.schema.json",

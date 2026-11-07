@@ -6,10 +6,10 @@ Last updated: 2026-11-07
 P1 - Architecture and contracts
 
 ## Overall Status
-P1 IN PROGRESS - Android WebView security boundary defined; compatibility and migration policy remains
+P1 IN PROGRESS - WebView security contract implemented; CI revalidation pending after first bug fix
 
 ## Project Summary
-PLAT is an experimental modular application platform. Android is the first Host; modules are independently distributed web applications using a Host-independent contract. The repository is also the source of truth for development continuity across agents and sessions.
+PLAT is an experimental modular application platform. Android is the first Host; modules are independently distributed web applications using a Host-independent contract. The repository is also the source of truth for development continuity across AI agents and sessions.
 
 ## Completed Decisions
 - Android is the primary Host.
@@ -46,7 +46,7 @@ PLAT is an experimental modular application platform. Android is the first Host;
 | Platform API v1 | Message schema, capability registry, method parameter validation, and authorization tests added |
 | Host Adapter v1 | Host descriptor schema, Android/Browser examples, and shared conformance vectors added |
 | WebView security boundary v1 | Policy, bridge envelope, reference session model, and security conformance vectors added; Android runtime enforcement not implemented |
-| CI | Metadata validation, module contract tests, and Host/security contract validation configured |
+| CI | Metadata validation, module contract tests, Host Adapter validation, and WebView security validation configured |
 | Release workflow | Scaffolded; Android build and signing are not implemented |
 | Android Host | Not started |
 | Platform UI | Not started |
@@ -58,18 +58,27 @@ PLAT is an experimental modular application platform. Android is the first Host;
 | Browser/PWA Host | Not started |
 
 ## Last Completed Increment
+**P1-04 - Define Host Adapter conformance requirements.**
+
+- Added the Host descriptor schema, Android and Browser/PWA examples, logical session contract, and the shared conformance matrix.
+- Added descriptor and matrix validation with automated tests.
+- The latest P1-04 CI run passed.
+
+## Active Increment
 **P1-05 - Specify WebView security boundaries and bridge protocol.**
 
-- Selected a per-module HTTPS origin derived from the stable module ID and served only from the verified package root through WebViewAssetLoader.
-- Defined an exact-origin, main-frame-only WebMessageListener binding with fail-closed behavior when the feature is unavailable.
+- Selected per-module HTTPS origins served from the verified package root through WebViewAssetLoader.
+- Defined exact-origin, main-frame-only WebMessageListener binding with fail-closed behavior when unavailable.
 - Added a versioned bridge envelope schema, handshake/session lifecycle, UTF-8 byte limits, message direction rules, and teardown semantics.
-- Defined strict WebView settings, navigation policy, CSP, response headers, and per-call capability authorization requirements.
-- Added a Python reference session model and conformance scenarios for origin spoofing, stale sessions, malformed/oversized messages, module identity spoofing, and cross-module storage access.
-- Added ADR-0005. The reference model validates the contract; no Android WebView implementation exists yet.
+- Defined WebView settings, navigation policy, CSP, response headers, and per-call capability authorization requirements.
+- Added a Python reference session model, security conformance vectors, validator, and tests.
+- The first CI attempt found a regex-escaping defect in the validator and an incorrect pre-handshake error path. This commit fixes both and adds an explicit origin-pattern regression test. Android runtime enforcement remains unimplemented.
 
 ## Verification
 - P1-04 remote CI: PASS - [run #9](https://github.com/dimkabuki/plat/actions/runs/42379205738), commit `6c493bf9dbbf01031a1cdbf54440c8a1f8ef0cd0`.
-- P1-05 local Python test suite: pending; repository cannot be cloned in the execution environment. Contract tests will run in remote CI.
+- P1-05 initial remote CI: FAIL - [run #10](https://github.com/dimkabuki/plat/actions/runs/42404668941), commit `e8f0deaa1d434c15d2e85314a88baaa9135533ee`. The WebView security validation step failed; the unit-test step was skipped.
+- Bug fix commit: this commit corrects the validator regex and handshake validation order; its remote CI result must be checked before starting P1-06.
+- Local Python tests: not run because this environment cannot resolve github.com for a repository checkout.
 - Android WebView/runtime conformance: not yet executable; the Android adapter does not exist.
 - Android build: not applicable; Android project does not exist.
 - Recovery validation: PASS - repository-only recovery report completed; a separate run in another provider/account was not performed.
@@ -87,12 +96,4 @@ PLAT is an experimental modular application platform. Android is the first Host;
 ## Next Increment
 **P1-06 - Define compatibility and migration policy.**
 
-Acceptance criteria:
-1. Define which version boundaries are independent and which changes require a major, minor, or patch increment for each contract.
-2. Specify Host/API compatibility evaluation, supported version windows, and behavior for unknown future versions.
-3. Define durable module-record and package migration rules, including rollback and crash-safe migration.
-4. Define data migration ownership, backup/restore expectations, and behavior when an update cannot migrate data.
-5. Add machine-readable policy examples and automated positive/negative tests.
-6. Review compatibility policy against the accepted ADRs before starting Android implementation.
-
-Do not begin Android Host implementation until the compatibility/migration policy has been reviewed.
+Do not begin P1-06 until the CI run for the P1-05 bug-fix commit succeeds.
